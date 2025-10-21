@@ -5,6 +5,12 @@
       ansible.builtin.debug:
         msg: Hello World!
 
+    - name: Create noel user
+      ansible.builtin.user:
+        groups: ["docker"]
+        append: true
+        name: noel
+
     # Docker
     - name: Install docker
       ansible.builtin.package:
@@ -28,11 +34,10 @@
       ansible.builtin.package:
         name: teamspeak3
         state: present
-    - name: Install PrusaSlicer
-      ansible.builtin.package:
-        name: prusa-slicer
-        state: present
-
+    #- name: Install PrusaSlicer
+    #  ansible.builtin.package:
+    #    name: prusa-slicer
+    #    state: present
 
     # Misc packages
     - name: Install ansible-lint
@@ -68,3 +73,23 @@
         name: user.name
         scope: system
         value: "Noel Jarling"
+    - name: Mark dotfiles folder safe
+      community.general.git_config:
+        name: safe.directory
+        scope: global
+        value: "/home/noel/dotfiles"
+
+    # Pull git Config
+    - name: Pull dotfiles
+      ansible.builtin.git:
+        accept_newhostkey: true
+        dest: "/home/noel/dotfiles"
+        repo: "https://github.com/NoelJarling/dotfiles.git"
+    - name: Apply dotfiles (stow)
+      ansible.builtin.command:
+        chdir: "/home/noel/dotfiles"
+        cmd: "stow --apply ."
+    - name: Apply dotfiles (stow)
+      ansible.builtin.command:
+        chdir: "/home/noel/dotfiles"
+        cmd: "stow --apply ."
