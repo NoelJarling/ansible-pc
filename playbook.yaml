@@ -1,0 +1,70 @@
+- name: My first task
+  hosts: local
+  tasks:
+    - name: Print message
+      ansible.builtin.debug:
+        msg: Hello World!
+
+    # Docker
+    - name: Install docker
+      ansible.builtin.package:
+        name: docker
+        state: present
+    - name: Enable docker unit
+      ansible.builtin.systemd_service:
+        name: docker.socket
+        enabled: true
+
+    # Programs
+    - name: Install Steam
+      ansible.builtin.package:
+        name: steam
+        state: present
+    - name: Install VS code (OSS)
+      ansible.builtin.package:
+        name: code
+        state: present
+    - name: Install Teamspeak
+      ansible.builtin.package:
+        name: teamspeak3
+        state: present
+    - name: Install PrusaSlicer
+      ansible.builtin.package:
+        name: prusa-slicer
+        state: present
+
+
+    # Misc packages
+    - name: Install ansible-lint
+      ansible.builtin.package:
+        name: ansible-lint
+        state: present
+    - name: Install nvidia container toolkit
+      ansible.builtin.package:
+        name: nvidia-container-toolkit
+        state: present
+    # XBOX controller
+    - name: Install xbox controller package
+      ansible.builtin.package:
+        name: xone-dkms
+        state: present
+    - name: Install xbox dongle firmware
+      ansible.builtin.package:
+        name: xone-dongle-firmware
+        state: present
+    - name: Install stow
+      ansible.builtin.package:
+        name: stow
+        state: present
+
+    # Git Config
+    - name: Update git email
+      community.general.git_config:
+        name: user.email
+        scope: system
+        value: "noeljarling@gmail.com"
+    - name: Update git name
+      community.general.git_config:
+        name: user.name
+        scope: system
+        value: "Noel Jarling"
